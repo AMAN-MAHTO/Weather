@@ -6,6 +6,10 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weather.models.CustomForeCast
+import com.example.weather.models.LiveDataType
+import com.example.weather.models.Location
+import com.example.weather.models.Locations
 import com.example.weather.models.WeatherList
 import com.example.weather.services.RetrofitInstance
 
@@ -17,20 +21,40 @@ import java.time.format.DateTimeFormatter
 
 class WeatherVm: ViewModel() {
 
-    var todayWeatherLiveData = MutableLiveData<List<WeatherList>>()
-    var upcommingFourDaysForecastLiveData = MutableLiveData<List<WeatherList>>()
 
-    var clossetToCurrentTimeWeather = MutableLiveData<WeatherList>()
-    var cityName = MutableLiveData<String>()
+    var clossetToCurrentTimeWeather = MutableLiveData<List<WeatherList>>()
+    var cityName = MutableLiveData<List<String>>()
+
+    var LiveData = MutableLiveData<LiveDataType>()
+    var listOfAllLocationCustomForeCast = mutableListOf<Location>()
+
+    var currentWeatherListOfAllLocations = mutableListOf<WeatherList>()
+    var cityNamesOfAllLocations = mutableListOf<String>()
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getWeather(city:String?, lat:String?, log:String?) = viewModelScope.launch(Dispatchers.IO) {
+    fun getWeatherByLocations(locations: Locations) = viewModelScope.launch(Dispatchers.IO) {
+
+        for (location in locations.geoLocationList){
+            getWeather(null,location.lat,location.log)
+
+        }
+        for (location in locations.cityList){
+
+            getWeather(location,null,null)
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getWeather(city:String?, lat:String?, log:String?): Any = viewModelScope.launch(Dispatchers.IO) {
         var todaysWeatherList = mutableListOf<WeatherList>()
         var forecastWeatherList = mutableListOf<WeatherList>()
+        var cityname:String
 
         val currentDateTime = LocalDateTime.now()
         val currentDate = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-
 
         val call = if(city!=null){
             RetrofitInstance.api.getFiveDaysWeatherDataByCity(city)
@@ -42,7 +66,7 @@ class WeatherVm: ViewModel() {
 
         if (response.isSuccessful){
             val weatherList = response.body()?.weatherList
-            cityName.postValue(response.body()?.city?.name)
+            cityname = response.body()?.city?.name.toString()
 
             weatherList?.forEach { weather ->
                 if (weather.dtTxt!!.split("\\s".toRegex()).contains(currentDate)) {
@@ -55,59 +79,27 @@ class WeatherVm: ViewModel() {
             }
 
             val closestWeather = closestWeather(todaysWeatherList)
-            clossetToCurrentTimeWeather.postValue(closestWeather)
-
-            todayWeatherLiveData.postValue(todaysWeatherList)
-            upcommingFourDaysForecastLiveData.postValue(forecastWeatherList)
-
-            Log.d("weatherVm", "getWeather: updating live data")
-
-        } else {
-            val errorMessage = response.message()
-            Log.e("CurrentWeatherError", "Error: $errorMessage")
-        }
-
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getForecast(city: String?, lat: String?, log: String?) = viewModelScope.launch(Dispatchers.IO) {
-        var forecastWeatherList = mutableListOf<WeatherList>()
-
-        val currentDateTime = LocalDateTime.now()
-        var currentDate = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-
-        val call = if (city != null) {
-            RetrofitInstance.api.getFiveDaysWeatherDataByCity(city)
-        } else {
-            RetrofitInstance.api.getFiveDaysWeatherDataByGeoLocation(lat!!, log!!)
-        }
-
-        val response = call.execute()
-
-        if (response.isSuccessful) {
-            val weatherList = response.body()?.weatherList
-
-            weatherList?.forEach { weather ->
-                if (!weather.dtTxt!!.split("\\s".toRegex()).contains(currentDate)) {
-                    forecastWeatherList.add(weather)
-                }
+            if (closestWeather != null) {
+                currentWeatherListOfAllLocations.add(closestWeather)
             }
+            cityNamesOfAllLocations.add(cityname)
 
-            upcommingFourDaysForecastLiveData.postValue(forecastWeatherList)
+            listOfAllLocationCustomForeCast.add(Location(cityname,CustomForeCast(todaysWeatherList,forecastWeatherList)))
+            Log.d("weatherVm", "listOfAllLocationCustomForeCast:  "+listOfAllLocationCustomForeCast.size.toString())
 
-            Log.d("weatherVm", "getForecast: updating live data ")
+            LiveData.postValue(LiveDataType(listOfAllLocationCustomForeCast))
+            clossetToCurrentTimeWeather.postValue(currentWeatherListOfAllLocations)
+            cityName.postValue(cityNamesOfAllLocations)
+
+            Log.d("weatherVm", "getWeather: live date get updated")
 
         } else {
             val errorMessage = response.message()
             Log.e("CurrentWeatherError", "Error: $errorMessage")
-
-
         }
+
+
     }
-
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun closestWeather(weatherList: List<WeatherList>): WeatherList? {
         val currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
