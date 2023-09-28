@@ -1,5 +1,6 @@
-package com.example.weather.models
+package com.example.weather.services
 
+import com.example.weather.models.ForeCast
 import com.example.weather.utils.utils
 import retrofit2.Call
 import retrofit2.http.GET

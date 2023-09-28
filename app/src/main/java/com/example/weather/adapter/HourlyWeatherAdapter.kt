@@ -37,8 +37,6 @@ class HourlyWeatherAdapter(val context:Context,val foreCast: ForeCast): Recycler
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: HourlyWeatherViewHolder, position: Int) {
 
-
-
          holder.temp.text = ""+(foreCast.weatherList[position].main?.temp?.roundToInt()).toString()+"°"
 
         val dateTime = foreCast.weatherList[position].dtTxt.toString()
