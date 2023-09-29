@@ -16,12 +16,13 @@ import com.example.weather.adapter.currentLocationAdapter
 import com.example.weather.adapter.editCityAdapter
 import com.example.weather.utils.SharedPrefs
 import java.util.Locale
+import kotlin.math.log
 
 class AddCity : AppCompatActivity() {
 
-//    private lateinit var cityArray:MutableList<String>
-//    private lateinit var tempArray:MutableList<String>
-//    private lateinit var recyclerViewCurrentLocations: RecyclerView
+    private lateinit var cityArray:ArrayList<String>
+//    private lateinit var tempArray:ArrayList<String>
+    private lateinit var recyclerViewCurrentLocations: RecyclerView
 
 
     override
@@ -35,8 +36,7 @@ class AddCity : AppCompatActivity() {
         val sharePref = SharedPrefs.getInstence(this)
         var array = sharePref.getValue("city")?.toMutableList()
 
-
-        var cityArray = arrayListOf("Abidjan","Abu Dhabi","Abuja","Accra","Addis Ababa","Ahmedabad","Aleppo","Alexandria","Algiers","Almaty","Amman","Amsterdam",
+        cityArray = arrayListOf("Abidjan","Abu Dhabi","Abuja","Accra","Addis Ababa","Ahmedabad","Aleppo","Alexandria","Algiers","Almaty","Amman","Amsterdam",
             "Anchorage","Andorra la Vella","Ankara","Antananarivo","Apia","Arnold","Ashgabat","Asmara","Asuncion","Athens","Auckland","Avarua","Baghdad","Baku","Bamako",
             "Banda Aceh","Bandar Seri Begawan","Bandung","Bangkok","Bangui","Banjul","Barcelona","Barranquilla","Basrah","Basse-Terre","Basseterre","Beijing","Beirut","Bekasi",
             "Belem","Belgrade","Belmopan","Belo Horizonte","Bengaluru","Berlin","Bern","Bishkek","Bissau","Bogota","Brasilia","Bratislava","Brazzaville","Bridgetown","Brisbane",
@@ -61,8 +61,9 @@ class AddCity : AppCompatActivity() {
             "Tegucigalpa","Tehran","Tel Aviv","Thimphu","Tianjin","Tijuana","Tirana","Tokyo","Toronto","Torshavn","Tripoli","Tunis","Ulan Bator","Vaduz","Valencia","Valletta",
             "Vancouver","Victoria","Vienna","Vientiane","Vilnius","Warsaw","Washington","Wellington","Willemstad","Windhoek","Wuhan","Xi'an","Yamoussoukro","Yangon","Yaounde",
             "Yekaterinburg","Yerevan","Yokohama","Zagreb")
+
 //        tempArray.addAll(cityArray)
-        val recyclerViewCurrentLocations = findViewById<RecyclerView>(R.id.recyclerViewCityList)
+        recyclerViewCurrentLocations = findViewById<RecyclerView>(R.id.recyclerViewCityList)
         val adapter = addCityAdapter(this,cityArray)
         recyclerViewCurrentLocations.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         recyclerViewCurrentLocations.adapter = adapter
@@ -89,6 +90,21 @@ class AddCity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+//                Log.d("search", "onQueryTextChange: "+newText.toString())
+//                val tempArray = arrayListOf<String>()
+//                if (newText != null) {
+//                    if(newText.isNotEmpty()){
+//                        cityArray.forEach{
+//                            if(it.lowercase(Locale.getDefault()).contains(newText.lowercase(Locale.getDefault()))){
+//                                tempArray.add(it)
+//                            }
+//                        }
+//                        Log.d("search", "onQueryTextChange: "+tempArray.toString())
+//                    }
+//
+//                }
+
+
                return false
             }
 
