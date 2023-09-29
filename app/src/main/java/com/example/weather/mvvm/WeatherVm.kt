@@ -35,20 +35,21 @@ class WeatherVm: ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getWeatherByLocations(locations: Locations) = viewModelScope.launch(Dispatchers.IO) {
-
-        for (location in locations.geoLocationList){
-            getWeather(null,location.lat,location.log)
+        var priority:Int =0
+        for (location in locations.geoLocationList!!){
+            getWeather(null,location.lat,location.log, priority)
+            priority+=1
 
         }
-        for (location in locations.cityList){
-
-            getWeather(location,null,null)
+        for (location in locations.cityList!!){
+            getWeather(location,null,null,priority)
+            priority+=1
         }
 
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getWeather(city:String?, lat:String?, log:String?): Any = viewModelScope.launch(Dispatchers.IO) {
+    private fun getWeather(city:String?, lat:String?, log:String?,priority:Int): Any = viewModelScope.launch(Dispatchers.IO) {
         var todaysWeatherList = mutableListOf<WeatherList>()
         var forecastWeatherList = mutableListOf<WeatherList>()
         var cityname:String
@@ -84,7 +85,7 @@ class WeatherVm: ViewModel() {
             }
             cityNamesOfAllLocations.add(cityname)
 
-            listOfAllLocationCustomForeCast.add(Location(cityname,CustomForeCast(todaysWeatherList,forecastWeatherList)))
+            listOfAllLocationCustomForeCast.add(Location(priority,cityname,CustomForeCast(todaysWeatherList,forecastWeatherList)))
             Log.d("weatherVm", "listOfAllLocationCustomForeCast:  "+listOfAllLocationCustomForeCast.size.toString())
 
             LiveData.postValue(LiveDataType(listOfAllLocationCustomForeCast))

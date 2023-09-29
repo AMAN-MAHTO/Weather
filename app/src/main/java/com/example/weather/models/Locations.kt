@@ -3,8 +3,8 @@ package com.example.weather.models
 import com.google.gson.annotations.SerializedName
 
 data class Locations(
-    @SerializedName("cityList"    ) var cityList    : ArrayList<String> = arrayListOf(),
-    @SerializedName("geoLocationList"    ) var geoLocationList    : ArrayList<geoLocation> = arrayListOf(),
+    @SerializedName("cityList"    ) var cityList: MutableList<String>? = mutableListOf(),
+    @SerializedName("geoLocationList"    ) var geoLocationList: MutableList<geoLocation>? = mutableListOf(),
 )
 
 data class geoLocation(

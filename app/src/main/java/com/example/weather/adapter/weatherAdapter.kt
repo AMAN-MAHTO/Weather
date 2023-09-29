@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
 import com.example.weather.models.ForeCast
-import com.example.weather.models.LiveDataType
+import com.example.weather.models.Location
 import com.example.weather.models.WeatherList
 
 
 import kotlin.math.roundToInt
 
-class weatherAdapter(val context: Context, var liveData: LiveDataType, val locations:List<String>): RecyclerView.Adapter<weatherAdapter.weatherAdapterViewHolder>() {
+class weatherAdapter(val context: Context, var liveData: MutableList<Location>): RecyclerView.Adapter<weatherAdapter.weatherAdapterViewHolder>() {
 
 
     inner class weatherAdapterViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
@@ -29,6 +29,7 @@ class weatherAdapter(val context: Context, var liveData: LiveDataType, val locat
         val humidity = itemView.findViewById<TextView>(R.id.textViewHumidity)
         val feelsLike = itemView.findViewById<TextView>(R.id.textViewFeelsLike)
         val icon = itemView.findViewById<ImageView>(R.id.imageViewIcon)
+        val description = itemView.findViewById<TextView>(R.id.textViewWeatherDescription)
         val recyclerViewHourlyWeather = itemView.findViewById<RecyclerView>(R.id.recyclerViewHourlyWeather)
         val recyclerViewWeeklyWeather = itemView.findViewById<RecyclerView>(R.id.recyclerViewWeaklyWeather)
 
@@ -41,17 +42,15 @@ class weatherAdapter(val context: Context, var liveData: LiveDataType, val locat
     }
 
     override fun getItemCount(): Int {
-        return liveData.AllLocations.size
+        return liveData.size
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: weatherAdapterViewHolder, position: Int) {
-        Log.d("weatherVm","onBindViewHolder: "+liveData.AllLocations[position].toString())
+        Log.d("weatherVm","onBindViewHolder: "+liveData[position].toString())
 
-
-
-        setUpWeeklyWeather(holder,liveData.AllLocations[position].customForeCast.upcomingWeather)
-        setUpWeatherView(holder,liveData.AllLocations[position].customForeCast.todaysWeather[0])
+        setUpWeeklyWeather(holder,liveData[position].customForeCast.upcomingWeather)
+        setUpWeatherView(holder,liveData[position].customForeCast.todaysWeather[0])
 
     }
 
@@ -67,7 +66,7 @@ class weatherAdapter(val context: Context, var liveData: LiveDataType, val locat
             holder.pressure.text = weatherList.main?.pressure.toString()
             holder.humidity.text = weatherList.main?.humidity.toString()+"%"
             holder.feelsLike.text = weatherList.main?.feelsLike.toString()+"°"
-
+            holder.description.text = weatherList.weather[0].description
             val imgName= "img"+weatherList.weather[0].icon.toString()
             val imgId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName())
             holder.icon.setImageResource(imgId)

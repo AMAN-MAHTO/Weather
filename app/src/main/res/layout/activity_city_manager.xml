@@ -7,7 +7,7 @@
     tools:context=".activity.cityManager">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerViewCurrentLocationsList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
@@ -31,7 +31,7 @@
         android:paddingRight="16dp">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonEditCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -41,7 +41,7 @@
             android:layout_marginRight="8dp"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonAddCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

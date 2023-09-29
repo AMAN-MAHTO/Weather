@@ -17,31 +17,37 @@
         <activity
             android:name=".activity.AddCity"
             android:exported="false"
+            android:label="Add City"
             android:theme="@style/Theme.WeatherActionBar"
             android:parentActivityName=".activity.cityManager"/>
         <activity
             android:name=".activity.EditCity"
-            android:exported="false"
+            android:exported="true"
+            android:label="Edit City"
             android:theme="@style/Theme.WeatherActionBar"
             android:parentActivityName=".activity.cityManager"/>
         <activity
             android:name=".activity.cityManager"
-            android:exported="false"
+            android:exported="true"
+            android:label="City Manager"
             android:theme="@style/Theme.WeatherActionBar"
-            android:parentActivityName=".activity.MainActivity"/>
+            android:parentActivityName=".activity.MainActivity">
+
+        </activity>
         <activity
             android:name=".activity.IntroScreen"
             android:exported="true" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+
             android:theme="@style/Theme.Weather">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

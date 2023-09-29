@@ -7,9 +7,11 @@ data class LiveDataType(
 )
 
 data class Location(
+    @SerializedName("priority"    ) var priority    : Int,
     @SerializedName("city"    ) var city    : String,
     @SerializedName("CustomForeCast"    ) var customForeCast: CustomForeCast
 )
+
 
 data class CustomForeCast(
     @SerializedName("todaysWeather"    ) var todaysWeather   : MutableList<WeatherList> = mutableListOf(),

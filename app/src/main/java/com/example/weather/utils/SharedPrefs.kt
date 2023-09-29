@@ -26,24 +26,28 @@ class SharedPrefs internal constructor(private val context: Context){
         context.getSharedPreferences(SHARED_PREF_NAME,Context.MODE_PRIVATE)
     }
 
-    fun setValue(key:String,value:String){
-        pref.edit().putString(key,value).apply()
+    fun setValue(key:String,value:List<String>){
+        pref.edit().putString(key,value.toString()).apply()
     }
 
-    fun getValue(key:String): String? {
-        return pref.getString(key,null)
+    fun getValue(key:String): List<String>? {
+        val arrayString = pref.getString(key, null)
+        val arrayList = arrayString?.substring(1,arrayString.length -1)?.split(",")?.map { it.trim() }
+        return arrayList
     }
 
-    fun setValueOrNull(key:String?,value:String?){
+    fun setValueOrNull(key:String?,value:List<String>?){
         if(key != null && value != null){
-            pref.edit().putString(key,value).apply()
+            pref.edit().putString(key,value.toString()).apply()
         }
 
     }
 
-    fun getValueOrNull(key:String?): String? {
+    fun getValueOrNull(key:String?): List<String>? {
         if(key != null) {
-            return pref.getString(key, null)
+            val arrayString = pref.getString(key, null)
+            val arrayList = arrayString?.substring(1,arrayString.length -1)?.split(",")?.map { it.trim() }
+            return arrayList
         }
         return null
     }
