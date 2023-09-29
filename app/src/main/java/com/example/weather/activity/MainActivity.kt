@@ -1,13 +1,17 @@
 package com.example.weather.activity
 
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -18,6 +22,12 @@ import com.example.weather.models.Locations
 import com.example.weather.models.geoLocation
 import com.example.weather.mvvm.WeatherVm
 import com.example.weather.utils.SharedPrefs
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -25,45 +35,93 @@ class MainActivity : AppCompatActivity() {
     }
     lateinit var weatherViewModel: WeatherVm
 
-
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    val  PERMISSION_REQUEST_CODE = 1001
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        // shared pref
         val sharePref = SharedPrefs.getInstence(this)
-
         var arrayCity = sharePref.getValueOrNull("city")?.toMutableList()
         var arrayGeoLocation = sharePref.getValueOrNull("geolocation")
 
+        // location setup
+        ActivityCompat.requestPermissions(
+            this, arrayOf(
+                ACCESS_COARSE_LOCATION,
+                ACCESS_FINE_LOCATION
+            ),
+            PackageManager.PERMISSION_GRANTED
+        )
+
+        val locationRequest: LocationRequest = LocationRequest.Builder(PRIORITY_HIGH_ACCURACY, 100)
+            .setWaitForAccurateLocation(false)
+            .setMinUpdateIntervalMillis(2000)
+            .setMaxUpdateDelayMillis(100)
+            .build()
+        val locationCallback: LocationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                if (locationResult == null) {
+                    return
+                }
+            }
+        }
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION),PERMISSION_REQUEST_CODE)
+        }
+
+        LocationServices.getFusedLocationProviderClient(getApplicationContext())
+            .requestLocationUpdates(locationRequest, locationCallback, null)
+
+
+
+        // setting view model according to location
         Log.d("location", "onCreate: "+arrayGeoLocation)
 
-        if (arrayCity != null && arrayGeoLocation!= null) {
+        if (arrayGeoLocation!= null) {
             Log.d("sharedpref","data")
             val locations = Locations(
                 arrayCity,
                 mutableListOf(geoLocation(arrayGeoLocation?.get(0), arrayGeoLocation?.get(1)))
             )
-
             setUpViewModel(locations)
 
 
        }else{
             Log.d("sharedpref","null")
-            sharePref.setValue("geolocation", listOf("40.730610","-73.935242"))
-            sharePref.setValue("city", listOf("Delhi"))
-            arrayCity = sharePref.getValueOrNull("city")?.toMutableList()
-            arrayGeoLocation = sharePref.getValueOrNull("geolocation")
-            val locations = Locations(
-                arrayCity,
-                mutableListOf(geoLocation(arrayGeoLocation?.get(0), arrayGeoLocation?.get(1)))
-            )
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener {
+                if(it != null){
+                    sharePref.setValue("geolocation", listOf(it.latitude.toString(),it.longitude.toString()))
 
-            setUpViewModel(locations)
+                    arrayCity = sharePref.getValueOrNull("city")?.toMutableList()
+                    arrayGeoLocation = sharePref.getValueOrNull("geolocation")
+                    val locations = Locations(
+                        arrayCity,
+                        mutableListOf(geoLocation(arrayGeoLocation?.get(0), arrayGeoLocation?.get(1)))
+                    )
+
+                    setUpViewModel(locations)
+                    Log.d("location", "fetchLocation: not null "+it.toString())
+                }else{
+                    Log.d("location", "fetchLocation: null ")
+                }
+            }
+
+
+
 //
         }
-
 
 
 

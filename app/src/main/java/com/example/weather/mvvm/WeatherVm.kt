@@ -41,9 +41,11 @@ class WeatherVm: ViewModel() {
             priority+=1
 
         }
-        for (location in locations.cityList!!){
-            getWeather(location,null,null,priority)
-            priority+=1
+        if(locations.cityList != null) {
+            for (location in locations.cityList!!) {
+                getWeather(location, null, null, priority)
+                priority += 1
+            }
         }
 
     }
