@@ -63,8 +63,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewIcon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textViewTemp"
                     app:layout_constraintEnd_toEndOf="parent"
