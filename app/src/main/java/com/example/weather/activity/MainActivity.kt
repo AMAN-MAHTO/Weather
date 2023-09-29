@@ -33,7 +33,9 @@ class MainActivity : AppCompatActivity() {
         val sharePref = SharedPrefs.getInstence(this)
 
         var arrayCity = sharePref.getValue("city")?.toMutableList()
+
         var arrayGeoLocation = sharePref.getValue("geolocation")
+
 
         Log.d("location", "onCreate: "+arrayGeoLocation)
 
@@ -52,7 +54,8 @@ class MainActivity : AppCompatActivity() {
         weatherViewModel.LiveData.observe(this, Observer {
             var data = it.AllLocations
             data.sortBy { it.priority }
-            Log.d("weatherVm", "onCreate: view model---" + data.toString())
+
+//            Log.d("weatherVm", "onCreate: view model---" + data.toString())
 
             val adapter = weatherAdapter(this, data)
 //

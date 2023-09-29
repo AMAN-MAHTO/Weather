@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +23,7 @@ class cityManager : AppCompatActivity() {
         val btnEdit = findViewById<Button>(R.id.buttonEditCity)
 
         val sharePref = SharedPrefs.getInstence(this)
-        var array = sharePref.getValue("city")
+        var array = sharePref.getValue("city")?.toMutableList()
 
 
         if (array != null) {

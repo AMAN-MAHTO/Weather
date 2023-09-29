@@ -12,7 +12,7 @@ import com.example.weather.R
 import com.example.weather.activity.cityManager
 import com.example.weather.utils.SharedPrefs
 
-class addCityAdapter(val context: Context, var array:List<String>):
+class addCityAdapter(val context: Context, var array:MutableList<String>):
     RecyclerView.Adapter<addCityAdapter.addCityViewHolder>() {
     val sharePref = SharedPrefs.getInstence(context)
     var sharedPrefArray = sharePref.getValue("city")?.toMutableList()
@@ -30,11 +30,14 @@ class addCityAdapter(val context: Context, var array:List<String>):
     override fun getItemCount(): Int {
         return array.size
     }
-
+    fun updateArray(array:MutableList<String>){
+        this.array = array
+        notifyDataSetChanged()
+    }
     override fun onBindViewHolder(holder: addCityViewHolder, position: Int) {
         holder.cityName.text = array[position]
 
-            holder.cityName.setOnClickListener() {
+        holder.cityName.setOnClickListener() {
                 if(!sharedPrefArray!!.contains(array[position])) {
                 sharedPrefArray?.add(array[position])
                 sharePref.setValueOrNull("city", sharedPrefArray)

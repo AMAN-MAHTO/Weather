@@ -1,7 +1,13 @@
 package com.example.weather.activity
 
+import android.app.SearchManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import androidx.appcompat.widget.SearchView
+import androidx.compose.runtime.rememberCompositionContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
@@ -9,13 +15,28 @@ import com.example.weather.adapter.addCityAdapter
 import com.example.weather.adapter.currentLocationAdapter
 import com.example.weather.adapter.editCityAdapter
 import com.example.weather.utils.SharedPrefs
+import java.util.Locale
 
 class AddCity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+
+//    private lateinit var cityArray:MutableList<String>
+//    private lateinit var tempArray:MutableList<String>
+//    private lateinit var recyclerViewCurrentLocations: RecyclerView
+
+
+    override
+    fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_city)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val cityList = listOf<String>("Abidjan","Abu Dhabi","Abuja","Accra","Addis Ababa","Ahmedabad","Aleppo","Alexandria","Algiers","Almaty","Amman","Amsterdam",
+
+
+
+        val sharePref = SharedPrefs.getInstence(this)
+        var array = sharePref.getValue("city")?.toMutableList()
+
+
+        var cityArray = arrayListOf("Abidjan","Abu Dhabi","Abuja","Accra","Addis Ababa","Ahmedabad","Aleppo","Alexandria","Algiers","Almaty","Amman","Amsterdam",
             "Anchorage","Andorra la Vella","Ankara","Antananarivo","Apia","Arnold","Ashgabat","Asmara","Asuncion","Athens","Auckland","Avarua","Baghdad","Baku","Bamako",
             "Banda Aceh","Bandar Seri Begawan","Bandung","Bangkok","Bangui","Banjul","Barcelona","Barranquilla","Basrah","Basse-Terre","Basseterre","Beijing","Beirut","Bekasi",
             "Belem","Belgrade","Belmopan","Belo Horizonte","Bengaluru","Berlin","Bern","Bishkek","Bissau","Bogota","Brasilia","Bratislava","Brazzaville","Bridgetown","Brisbane",
@@ -40,19 +61,41 @@ class AddCity : AppCompatActivity() {
             "Tegucigalpa","Tehran","Tel Aviv","Thimphu","Tianjin","Tijuana","Tirana","Tokyo","Toronto","Torshavn","Tripoli","Tunis","Ulan Bator","Vaduz","Valencia","Valletta",
             "Vancouver","Victoria","Vienna","Vientiane","Vilnius","Warsaw","Washington","Wellington","Willemstad","Windhoek","Wuhan","Xi'an","Yamoussoukro","Yangon","Yaounde",
             "Yekaterinburg","Yerevan","Yokohama","Zagreb")
+//        tempArray.addAll(cityArray)
+        val recyclerViewCurrentLocations = findViewById<RecyclerView>(R.id.recyclerViewCityList)
+        val adapter = addCityAdapter(this,cityArray)
+        recyclerViewCurrentLocations.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        recyclerViewCurrentLocations.adapter = adapter
 
-
-        val sharePref = SharedPrefs.getInstence(this)
-        var array = sharePref.getValue("city")?.toMutableList()
-
-
-
-        if (cityList != null) {
-            val recyclerViewCurrentLocations = findViewById<RecyclerView>(R.id.recyclerViewCityList)
-            val adapter = addCityAdapter(this,cityList)
-            recyclerViewCurrentLocations.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-            recyclerViewCurrentLocations.adapter = adapter
-
-        }
     }
+
+    @Override
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.top_app_bar, menu)
+        val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        val appBarSearch = menu?.findItem(R.id.app_bar_search)
+        val searchView = appBarSearch?.actionView as SearchView
+
+        searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+
+                searchView.onActionViewCollapsed()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+               return false
+            }
+
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+
 }
