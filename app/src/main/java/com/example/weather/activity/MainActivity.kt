@@ -4,17 +4,21 @@ package com.example.weather.activity
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+
 import android.content.Intent
 import android.content.pm.PackageManager
+
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.example.weather.R
 
 import com.example.weather.adapter.weatherAdapter
 import com.example.weather.databinding.ActivityMainBinding
@@ -27,7 +31,10 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
+import com.google.android.gms.tasks.CancellationTokenSource
+
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -37,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     val  PERMISSION_REQUEST_CODE = 1001
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +86,15 @@ class MainActivity : AppCompatActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION),PERMISSION_REQUEST_CODE)
+            val result = fusedLocationProviderClient.getCurrentLocation(
+//
+                Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+                CancellationTokenSource().token
+            )
+            result.addOnCompleteListener(){
+                sharePref.setValue("geolocation", listOf(it.result.latitude.toString(),it.result.longitude.toString()))
+                sharePref.setValue("city", listOf("Delhi"))
+            }
         }
 
         LocationServices.getFusedLocationProviderClient(getApplicationContext())
@@ -100,10 +117,11 @@ class MainActivity : AppCompatActivity() {
        }else{
             Log.d("sharedpref","null")
             fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+            // prevoius saved location
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener {
                 if(it != null){
                     sharePref.setValue("geolocation", listOf(it.latitude.toString(),it.longitude.toString()))
-
+                    sharePref.setValue("city", listOf("Delhi")) // in add city, mutable list add, do not add element in null list
                     arrayCity = sharePref.getValueOrNull("city")?.toMutableList()
                     arrayGeoLocation = sharePref.getValueOrNull("geolocation")
                     val locations = Locations(
@@ -112,15 +130,26 @@ class MainActivity : AppCompatActivity() {
                     )
 
                     setUpViewModel(locations)
+
                     Log.d("location", "fetchLocation: not null "+it.toString())
                 }else{
                     Log.d("location", "fetchLocation: null ")
                 }
             }
 
-
-
+            // current location
+//            val result = fusedLocationProviderClient.getCurrentLocation(
 //
+//                Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+//                CancellationTokenSource().token
+//            )
+//            result.addOnCompleteListener(){
+//                sharePref.setValue("geolocation", listOf(it.result.latitude.toString(),it.result.longitude.toString()))
+//                sharePref.setValue("city", listOf("Delhi"))
+//            }
+
+            // get sharedpref and setup view model
+
         }
 
 
@@ -141,16 +170,15 @@ class MainActivity : AppCompatActivity() {
             var data = it.AllLocations
             data.sortBy { it.priority }
 
-//            Log.d("weatherVm", "onCreate: view model---" + data.toString())
-
             val adapter = weatherAdapter(this, data)
-//
+
             binding.viewpager2Weathers.adapter = adapter
             binding.viewpager2Weathers.registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     binding.textViewLocationName.text = data[position].city
+//                    binding.constraintMain.setBackgroundResource(R.drawable.haze_bg)
 
                 }
             })

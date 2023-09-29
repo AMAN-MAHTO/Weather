@@ -27,6 +27,7 @@ class cityManager : AppCompatActivity() {
 
 
         if (array != null) {
+            Log.d("sharedpref", "onCreate: city manager, array not null")
             val recyclerViewCurrentLocations = findViewById<RecyclerView>(R.id.recyclerViewCurrentLocationsList)
             val adapter = currentLocationAdapter(this,array)
             recyclerViewCurrentLocations.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
@@ -34,6 +35,8 @@ class cityManager : AppCompatActivity() {
 
 
             sharePref.setValue("city",array)
+        }else{
+            Log.d("sharedpref", "onCreate: city manager, array  null")
         }
 
         btnAdd.setOnClickListener(){
