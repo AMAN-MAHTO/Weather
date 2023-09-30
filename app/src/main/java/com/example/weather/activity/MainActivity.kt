@@ -12,6 +12,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        binding.lottieAnimationViewLoading.visibility = View.VISIBLE
 
         // shared pref
         val sharePref = SharedPrefs.getInstence(this)
@@ -171,7 +173,7 @@ class MainActivity : AppCompatActivity() {
             data.sortBy { it.priority }
 
             val adapter = weatherAdapter(this, data)
-
+            binding.lottieAnimationViewLoading.visibility = View.INVISIBLE
             binding.viewpager2Weathers.adapter = adapter
             binding.viewpager2Weathers.registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
