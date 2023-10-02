@@ -29,7 +29,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTimeOfTimeWeatherLyout"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/img01d" />
 
     <TextView
         android:id="@+id/textViewTemperatureOfTimeWeatherLyout"

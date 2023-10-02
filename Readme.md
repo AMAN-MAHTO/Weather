@@ -1,9 +1,14 @@
 # Weather
 
+```diff
+- before starting the app, ON internet and location services
+```
 
 > V.0.0.4  
 > https://drive.google.com/file/d/1mS1WizJe51OzHUH2Cp1H8ILTAMfhK3ij/view?usp=sharing
 
+
+---
 
 | | |
 | ------------- | ------------- |

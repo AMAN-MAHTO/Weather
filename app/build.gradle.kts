@@ -51,6 +51,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
@@ -85,4 +86,5 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
     //fused location provider
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
 }

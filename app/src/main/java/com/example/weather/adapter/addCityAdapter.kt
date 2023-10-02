@@ -2,7 +2,6 @@ package com.example.weather.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +24,7 @@ class addCityAdapter(val context: Context, var array:MutableList<String>,var cou
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): addCityViewHolder {
         val view =  LayoutInflater.from(parent.context)
-            .inflate(R.layout.add_city_adapter_layout, parent, false)
+            .inflate(R.layout.adapter_add_city_layout, parent, false)
         return addCityViewHolder(view)
     }
 

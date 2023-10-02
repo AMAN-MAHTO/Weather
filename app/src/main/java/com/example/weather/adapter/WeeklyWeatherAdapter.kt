@@ -10,10 +10,8 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
-import com.example.weather.models.ForeCast
 import com.example.weather.models.WeatherList
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class WeeklyWeatherAdapter(val context: Context,val weatherList:List<WeatherList>):
     RecyclerView.Adapter<WeeklyWeatherAdapter.WeeklyWeatherViewHolder>() {
@@ -25,7 +23,7 @@ class WeeklyWeatherAdapter(val context: Context,val weatherList:List<WeatherList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeeklyWeatherViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.weekly_weather_adapter_layout,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_weekly_weather_layout,parent,false)
         return WeeklyWeatherViewHolder(view)
     }
 
@@ -38,7 +36,7 @@ class WeeklyWeatherAdapter(val context: Context,val weatherList:List<WeatherList
 
             holder.dayName.text =LocalDate.parse(weatherList[position].dtTxt?.substring(0, 10)).dayOfWeek.toString()
             holder.minMaxTemp.text = weatherList[position].main?.temp.toString()
-            val imgName = "img" + weatherList[0].weather[0].icon.toString()
+            val imgName = "img" + weatherList[0].weather[0].icon.toString()+"2"
             val imgId =context.getResources().getIdentifier(imgName, "drawable", context.getPackageName())
             holder.icon.setImageResource(imgId)
 

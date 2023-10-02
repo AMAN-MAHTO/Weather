@@ -37,7 +37,7 @@ class weatherAdapter(val context: Context, var liveData: MutableList<Location>):
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): weatherAdapterViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.weather_adapter_layout,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_weather_layout,parent,false)
         return weatherAdapterViewHolder(view)
     }
 
@@ -67,7 +67,7 @@ class weatherAdapter(val context: Context, var liveData: MutableList<Location>):
             holder.humidity.text = weatherList.main?.humidity.toString()+"%"
             holder.feelsLike.text = weatherList.main?.feelsLike.toString()+"°"
             holder.description.text = weatherList.weather[0].description
-            val imgName= "img"+weatherList.weather[0].icon.toString()
+            val imgName= "img"+weatherList.weather[0].icon.toString()+"2"
             val imgId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName())
             holder.icon.setImageResource(imgId)
         }

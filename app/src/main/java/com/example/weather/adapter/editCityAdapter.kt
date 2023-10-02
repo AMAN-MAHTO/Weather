@@ -20,7 +20,7 @@ class editCityAdapter(val context: Context, var array:MutableList<String>):
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): editCityViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.edit_city_adapter, parent, false)
+            .inflate(R.layout.adapter_edit_city, parent, false)
         return editCityViewHolder(view)
     }
 
@@ -34,7 +34,7 @@ class editCityAdapter(val context: Context, var array:MutableList<String>):
 
     override fun onBindViewHolder(holder: editCityViewHolder, position: Int) {
         holder.name.text = array[position]
-        holder.btnDelete.setImageResource(R.drawable.baseline_delete_outline_24)
+        holder.btnDelete.setImageResource(R.drawable.icon_baseline_delete_outline_24)
         holder.btnDelete.setOnClickListener(){
             var temp = array
             temp.remove(array[position])

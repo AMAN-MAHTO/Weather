@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Weather" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="Theme.Weather" parent="Theme.AppCompat.Light.NoActionBar">
+<!--        <item name="android:textViewStyle">@style/textViewJosefinSlabStyle</item>-->
+    </style>
     <style name="Theme.WeatherActionBar" parent="Theme.AppCompat.Light" />
+    
+    <style name="textViewJosefinSlabStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/josefin_slab_bold</item>
+    </style>
+    <style name="textViewBigShoulderMedium" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/big_shoulders_display_medium</item>
+    </style>
 
       </resources>

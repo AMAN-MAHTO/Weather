@@ -13,8 +13,6 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
 import com.example.weather.models.ForeCast
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import kotlin.math.roundToInt
 
 
@@ -26,7 +24,7 @@ class HourlyWeatherAdapter(val context:Context,val foreCast: ForeCast): Recycler
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourlyWeatherViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.time_weather_adapter_layout,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_time_weather_layout,parent,false)
         return HourlyWeatherViewHolder(view)
     }
 

@@ -17,7 +17,7 @@ class currentLocationAdapter(context: Context, val array:List<String>):
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): currentLocationViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.current_location_adapter, parent, false)
+            .inflate(R.layout.adapter_current_location, parent, false)
         return currentLocationViewHolder(view)
     }
 

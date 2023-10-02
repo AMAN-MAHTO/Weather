@@ -22,7 +22,7 @@
             <TextView
 
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="24dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -31,10 +31,10 @@
 
                 <TextView
                     android:id="@+id/textViewTemp"
-                    style="@style/TextAppearance.Material3.HeadlineLarge"
+                    style="@style/textViewBigShoulderMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="32°"
+                    android:text="32°c"
                     android:textSize="100dp"
                     app:layout_constraintBottom_toTopOf="@+id/textViewWeatherDescription"
                     app:layout_constraintStart_toStartOf="parent"
@@ -43,33 +43,34 @@
 
                 <TextView
                     android:id="@+id/textViewMinMaxTemp"
+                    style="@style/textViewBigShoulderMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_marginTop="8dp"
                     android:text="24° / 32°"
                     app:layout_constraintStart_toStartOf="@+id/textViewWeatherDescription"
                     app:layout_constraintTop_toBottomOf="@+id/textViewWeatherDescription" />
 
                 <TextView
-
                     android:id="@+id/textViewWeatherDescription"
+                    style="@style/textViewJosefinSlabStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="Haze"
-                    android:textSize="24sp"
+                    android:textSize="32sp"
                     app:layout_constraintStart_toStartOf="@+id/textViewTemp"
                     app:layout_constraintTop_toBottomOf="@+id/textViewTemp" />
 
                 <ImageView
                     android:id="@+id/imageViewIcon"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
                     android:layout_marginEnd="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewTemp"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewMinMaxTemp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textViewTemp"
                     app:layout_constraintTop_toTopOf="@+id/textViewTemp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,6 +86,8 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="#9E9E9E" />
@@ -96,7 +99,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="32dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="16dp">
+                android:paddingBottom="32dp">
 
 
                 <LinearLayout
@@ -114,7 +117,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pressure"
-
                             android:textSize="20sp"
                             app:layout_constraintBottom_toTopOf="@+id/textView7"
                             app:layout_constraintStart_toStartOf="parent"
@@ -202,6 +204,15 @@
 
 
             </LinearLayout>
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="#9E9E9E" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewWeaklyWeather"
