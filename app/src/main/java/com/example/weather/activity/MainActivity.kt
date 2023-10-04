@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        // checking permission
         if (ActivityCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -96,6 +97,8 @@ class MainActivity : AppCompatActivity() {
             result.addOnCompleteListener(){
                 sharePref.setValue("geolocation", listOf(it.result.latitude.toString(),it.result.longitude.toString()))
                 sharePref.setValue("city", listOf("Delhi"))
+                // resetting the arrayGeolocation form sharePref
+                arrayGeoLocation = sharePref.getValueOrNull("geolocation")
             }
         }
 
@@ -173,7 +176,9 @@ class MainActivity : AppCompatActivity() {
             data.sortBy { it.priority }
 
             val adapter = weatherAdapter(this, data)
+            // loding animation invisible
             binding.lottieAnimationViewLoading.visibility = View.INVISIBLE
+            // view pager, setup
             binding.viewpager2Weathers.adapter = adapter
             binding.viewpager2Weathers.registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
@@ -187,10 +192,10 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        weatherViewModel.cityName.observe(this, Observer {
-            binding.textViewLocationName.text =
-                it[binding.viewpager2Weathers.currentItem].toString()
-        })
+//        weatherViewModel.cityName.observe(this, Observer {
+//            binding.textViewLocationName.text =
+//                it[binding.viewpager2Weathers.currentItem].toString()
+//        })
     }
 
     private fun setUpLocationName(position: Int) {
