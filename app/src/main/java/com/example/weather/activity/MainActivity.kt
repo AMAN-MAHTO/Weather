@@ -185,7 +185,21 @@ class MainActivity : AppCompatActivity() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     binding.textViewLocationName.text = data[position].city
-//                    binding.constraintMain.setBackgroundResource(R.drawable.haze_bg)
+                    val iconId = data[position].customForeCast.todaysWeather[0].weather[0].icon
+                    var backgroundDrawable = R.drawable.bg_sunny
+                    when (iconId){
+                        "01d" -> backgroundDrawable = R.drawable.bg_sunny
+                        "01n" -> backgroundDrawable = R.drawable.bg_night
+                        "02n","02d" -> backgroundDrawable = R.drawable.bg_partialy_cloudy
+                        "03n","03d","04n","04d"-> backgroundDrawable = R.drawable.bg_cloudy
+                        "09n","09d","10n","10d" -> backgroundDrawable = R.drawable.bg_rain
+                        "11n","11d" -> backgroundDrawable = R.drawable.bg_thunder_strom
+                        "13d" -> backgroundDrawable = R.drawable.bg_snow_day
+                        "13n"-> backgroundDrawable = R.drawable.bg_snow_night
+                        "50n","50d"-> backgroundDrawable = R.drawable.bg_haze
+
+                    }
+                    binding.constraintMain.setBackgroundResource(backgroundDrawable)
 
                 }
             })
