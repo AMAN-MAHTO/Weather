@@ -3,6 +3,8 @@
 
     <style name="Theme.Weather" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textViewStyle">@style/textViewColorWhite</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
     <style name="Theme.WeatherActionBar" parent="Theme.AppCompat.Light" />
 
