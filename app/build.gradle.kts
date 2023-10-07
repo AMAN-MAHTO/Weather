@@ -86,6 +86,7 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
     //fused location provider
     implementation("com.google.android.gms:play-services-location:21.0.1")
-
+    // indicater
+    implementation("me.relex:circleindicator:2.1.6")
 
 }

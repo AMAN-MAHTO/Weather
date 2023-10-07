@@ -204,6 +204,8 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
+            binding.circleIndicator.setViewPager(binding.viewpager2Weathers)
+
         })
 
 //        weatherViewModel.cityName.observe(this, Observer {

@@ -60,8 +60,16 @@
             android:layout_marginTop="32dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
 
+            />
+        <me.relex.circleindicator.CircleIndicator3
+            android:paddingTop="8dp"
+            android:id="@+id/circleIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ci_gravity="left"
+            app:ci_drawable="@drawable/view_pager_indecater_light"
+            app:ci_drawable_unselected="@drawable/view_paager_indecater_dark"
             />
        
 
