@@ -27,6 +27,10 @@ class editCityAdapter(val context: Context, var array:MutableList<String>):
     override fun getItemCount(): Int {
         return array.size
     }
+
+    fun updateSharedPref(){
+        sharePref.setValueOrNull("city",this.array)
+    }
     fun updateArray(array:MutableList<String>){
         this.array = array
         notifyDataSetChanged()
@@ -41,6 +45,7 @@ class editCityAdapter(val context: Context, var array:MutableList<String>):
             updateArray(temp)
             sharePref.setValueOrNull("city",temp)
         }
+
 
 
     }

@@ -9,12 +9,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.toUpperCase
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
 import com.example.weather.models.ForeCast
 import com.example.weather.models.Location
 import com.example.weather.models.WeatherList
+import java.util.Locale
 
 
 import kotlin.math.roundToInt
@@ -50,7 +53,7 @@ class weatherAdapter(val context: Context, var liveData: MutableList<Location>):
         Log.d("weatherVm","onBindViewHolder: "+liveData[position].toString())
 
         setUpWeeklyWeather(holder,liveData[position].customForeCast.upcomingWeather)
-        setUpWeatherView(holder,liveData[position].customForeCast.todaysWeather[0])
+        setUpWeatherView(holder,liveData[position].customForeCast.todaysWeather[1])
 
     }
 
@@ -61,14 +64,17 @@ class weatherAdapter(val context: Context, var liveData: MutableList<Location>):
 //        holder.locationName.text = foreCast.city?.name.toString()
 
         if (weatherList != null) {
-            holder.temp.text = ""+(weatherList.main?.temp?.roundToInt()).toString()+"°"
-            holder.minMaxTemp.text = "${weatherList.main?.tempMin}° / ${weatherList.main?.tempMax}°"
+
+            holder.temp.text = "" + (weatherList.main?.temp?.roundToInt()).toString() + "°c"
+            holder.minMaxTemp.text = "${weatherList.main?.tempMin}°c / ${weatherList.main?.tempMax}°c"
             holder.pressure.text = weatherList.main?.pressure.toString()
-            holder.humidity.text = weatherList.main?.humidity.toString()+"%"
-            holder.feelsLike.text = weatherList.main?.feelsLike.toString()+"°"
-            holder.description.text = weatherList.weather[0].description
-            val imgName= "img"+weatherList.weather[0].icon.toString()+"2"
-            val imgId = context.getResources().getIdentifier(imgName, "drawable", context.getPackageName())
+            holder.humidity.text = weatherList.main?.humidity.toString() + "%"
+            holder.feelsLike.text = weatherList.main?.feelsLike.toString() + "°"
+            holder.description.text = weatherList.weather[0].description.toString()
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+            val imgName = "img" + weatherList.weather[0].icon.toString() + "2"
+            val imgId =
+                context.getResources().getIdentifier(imgName, "drawable", context.getPackageName())
             holder.icon.setImageResource(imgId)
         }
 

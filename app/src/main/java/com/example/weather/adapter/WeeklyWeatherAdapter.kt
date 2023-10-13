@@ -35,7 +35,7 @@ class WeeklyWeatherAdapter(val context: Context,val weatherList:List<WeatherList
     override fun onBindViewHolder(holder: WeeklyWeatherViewHolder, position: Int) {
 
             holder.dayName.text =LocalDate.parse(weatherList[position].dtTxt?.substring(0, 10)).dayOfWeek.toString()
-            holder.minMaxTemp.text = weatherList[position].main?.temp.toString()
+            holder.minMaxTemp.text = weatherList[position].main?.temp.toString()+"°c"
             val imgName = "img" + weatherList[0].weather[0].icon.toString()+"2"
             val imgId =context.getResources().getIdentifier(imgName, "drawable", context.getPackageName())
             holder.icon.setImageResource(imgId)

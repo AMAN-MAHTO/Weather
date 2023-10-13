@@ -142,6 +142,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+
+
             // current location
 //            val result = fusedLocationProviderClient.getCurrentLocation(
 //
